@@ -19,7 +19,7 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 
   const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+ const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
   setStatus('submitting');
 

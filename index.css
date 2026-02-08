@@ -1,0 +1,16 @@
+
+/* Global Styles */
+:root {
+  --primary-blue: #0066cc;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Ensure smooth scrolling for the entire page */
+html {
+  scroll-behavior: smooth;
+}
