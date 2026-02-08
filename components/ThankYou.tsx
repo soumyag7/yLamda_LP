@@ -15,11 +15,11 @@ const ThankYou: React.FC<PageProps> = ({ onNavigate }) => {
         </div>
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Thank You!</h1>
         <p className="text-xl text-gray-600 mb-10 leading-relaxed">
-          Your request for a Free CRM Audit has been received. One of our Zoho implementation experts will review your details and reach out within 24 business hours.
+          Your request for a Free Business Process Audit has been received. One of our Zoho implementation experts will review your details and reach out within 24 business hours.
         </p>
         <button 
           onClick={() => onNavigate('home')}
-          className="inline-flex items-center gap-2 bg-[#0066cc] text-white px-10 py-4 rounded-2xl font-bold text-lg shadow-xl shadow-blue-100 hover:bg-[#0052a3] transition-all"
+          className="inline-flex items-center gap-2 bg-[#0066cc] text-white px-12 py-4.5 rounded-2xl font-bold text-lg shadow-[0_10px_25px_-5px_rgba(0,102,204,0.3)] hover:shadow-[0_20px_40px_-10px_rgba(0,102,204,0.4)] hover:-translate-y-1 hover:scale-[1.02] transition-all duration-300 active:scale-[0.98]"
         >
           <ArrowLeft size={20} />
           Return to Home

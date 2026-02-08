@@ -19,55 +19,49 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'error' | 'success'>('idle');
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('submitting');
+  e.preventDefault();
+  setStatus('submitting');
 
-    try {
-      // Format data correctly for Google Sheets
-      const params = new URLSearchParams({
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        industry: formData.industry
-      });
+  try {
+    // NEW: Send as FORM DATA instead of JSON (more reliable)
+    const formDataToSend = new FormData();
+    formDataToSend.append('name', formData.name);
+    formDataToSend.append('email', formData.email);
+    formDataToSend.append('phone', formData.phone);
+    formDataToSend.append('industry', formData.industry);
+    
+    console.log('Sending data:', {
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      industry: formData.industry
+    });
 
-      // Send to Google Sheets
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: params
-      });
+    const response = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: formDataToSend  // Changed from JSON to FormData
+    });
+    
+    console.log('Form submitted successfully');
+    onNavigate('thank-you');
+    
+  } catch (error) {
+    console.error("Submission error:", error);
+    setStatus('error');
+    setTimeout(() => setStatus('idle'), 3000);
+  }
+};
 
-      // Show success status
-      setStatus('success');
-      
-      // Reset form
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        industry: ''
-      });
-
-      // Redirect to thank you page after 1.5 seconds
-      setTimeout(() => {
-        onNavigate('thank-you');
-      }, 1500);
-
-    } catch (error) {
-      console.error("Submission error:", error);
-      setStatus('error');
-      setTimeout(() => setStatus('idle'), 3000);
-    }
-  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
-    <section className="relative overflow-hidden bg-white pt-10 pb-12 px-4 md:pt-16 md:pb-24 border-b border-gray-50">
+    <section className="relative overflow-hidden bg-white pt-10 pb-8 px-4 md:pt-16 md:pb-16 border-b border-gray-50">
       <div className="absolute inset-0 bg-[#f8fbff] z-0">
+        {/* Fix: Removed duplicated/malformed div tag on line 70 */}
         <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-100/50 rounded-full blur-[120px]"></div>
         <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-blue-50/80 rounded-full blur-[100px]"></div>
       </div>
@@ -77,24 +71,24 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="flex flex-col lg:flex-row items-center gap-16">
+        <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
           <div className="lg:w-1/2 text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-100/50 border border-blue-200 text-blue-700 text-sm font-bold mb-8 backdrop-blur-sm">
-              <Zap size={14} className="fill-blue-700" />
-              <span>SPECIALIZED CRM CONFIGURATION</span>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-100/50 border border-blue-200 text-blue-700 text-sm font-bold mb-8 backdrop-blur-sm uppercase">
+              < Zap size={14} className="fill-blue-700" />
+              <span>Business Process Automation</span>
             </div>
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight tracking-tight">
-              Scale Your Revenue, Not Your <span className="text-[#0066cc]">Workload</span>
+              Tired of Chaotic <span className="text-[#0066cc]">Business Process ?</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-xl leading-relaxed">
-              We build custom Zoho CRM systems that eliminate manual work and help your team focus on clients.
+              We build custom Zoho CRM systems that replace manual mess with automated workflows.
             </p>
             
-            <div className="space-y-4 mb-8">
+            <div className="space-y-4">
               {[
-                { icon: <ShieldCheck className="text-blue-600" />, text: "Secure Data Migration Planning" },
-                { icon: <Users className="text-blue-600" />, text: "Tailored Workflows for Your Unique Process" },
-                { icon: <Zap className="text-blue-600" />, text: "Automation Focused on Saving You Time" }
+                { icon: <ShieldCheck className="text-blue-600" />, text: "One system for all your leads & orders" },
+                { icon: <Users className="text-blue-600" />, text: "Less manual work, fewer mistakes" },
+                { icon: <Zap className="text-blue-600" />, text: "Real-time dashboards for full visibility" }
               ].map((item, i) => (
                 <div key={i} className="flex items-center gap-3 text-gray-700 font-semibold">
                   <div className="bg-white p-1 rounded-md shadow-sm border border-gray-100">
@@ -104,25 +98,11 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                 </div>
               ))}
             </div>
-
-            <div className="py-6 border-t border-gray-200/50">
-              <p className="text-sm text-gray-500 italic">
-                Get <span className="font-bold text-gray-900">Direct Expert Support</span> for your CRM journey.
-              </p>
-            </div>
           </div>
 
           <div id="hero-form" className="lg:w-1/2 w-full scroll-mt-24 md:scroll-mt-32">
             <div className="bg-white/80 backdrop-blur-md rounded-[2.5rem] p-8 md:p-10 shadow-[0_20px_50px_rgba(0,102,204,0.12)] border border-white min-h-[480px] flex flex-col justify-center">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Get Your Free CRM Audit</h3>
-              <p className="text-gray-500 mb-8">Tell us about your business and we'll show you how much you can automate.</p>
-              
-              {status === 'success' && (
-                <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-2xl text-green-700 text-center font-semibold">
-                  ✓ Thank you! We'll be in touch within 24 hours.
-                </div>
-              )}
-
+              <h3 className="text-3xl font-bold text-gray-900 mb-8">Book Your Free Systems Audit</h3>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <input 
@@ -168,8 +148,8 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                 />
                 <button 
                   type="submit" 
-                  disabled={status === 'submitting' || status === 'success'}
-                  className="w-full bg-[#0066cc] text-white py-4.5 rounded-2xl font-bold text-lg shadow-xl shadow-blue-200 hover:bg-[#0052a3] transition-all transform hover:scale-[1.01] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  disabled={status === 'submitting'}
+                  className="w-full bg-[#0066cc] text-white py-5 rounded-2xl font-bold text-lg shadow-[0_10px_30px_-5px_rgba(0,102,204,0.4)] hover:shadow-[0_20px_40px_-10px_rgba(0,102,204,0.5)] hover:-translate-y-1 hover:scale-[1.01] transition-all duration-300 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {status === 'submitting' ? (
                     <>
@@ -178,8 +158,6 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                     </>
                   ) : status === 'error' ? (
                     'Try Again'
-                  ) : status === 'success' ? (
-                    'Redirecting...'
                   ) : (
                     "Let's Connect"
                   )}

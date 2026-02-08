@@ -13,9 +13,9 @@ const Process: React.FC = () => {
   ];
 
   return (
-    <section id="process" className="py-24 px-4 bg-gray-50 overflow-hidden relative">
+    <section id="process" className="py-16 md:py-20 px-4 bg-gray-50 overflow-hidden relative">
       <div className="max-w-7xl mx-auto relative">
-        <h2 className="text-3xl md:text-5xl font-bold text-center text-gray-900 mb-20">
+        <h2 className="text-3xl md:text-5xl font-bold text-center text-gray-900 mb-16">
           How We Implement Your Zoho System
         </h2>
         
@@ -37,10 +37,10 @@ const Process: React.FC = () => {
           ))}
         </div>
 
-        <div className="mt-24 text-center">
+        <div className="mt-16 text-center">
           <button 
             onClick={() => document.getElementById('hero-form')?.scrollIntoView({ behavior: 'smooth' })}
-            className="bg-[#0066cc] text-white px-10 py-4 rounded-2xl font-bold text-lg shadow-xl shadow-blue-100 hover:bg-[#0052a3] transition-all active:scale-95"
+            className="bg-[#0066cc] text-white px-12 py-4 rounded-2xl font-bold text-lg shadow-[0_10px_25px_-5px_rgba(0,102,204,0.3)] hover:shadow-[0_20px_40px_-10px_rgba(0,102,204,0.4)] hover:-translate-y-1 hover:scale-[1.02] transition-all duration-300 active:scale-[0.98]"
           >
             Book A Call
           </button>

@@ -4,8 +4,9 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Problems from './components/Problems';
 import Features from './components/Features';
+import ChaosToSystem from './components/ChaosToSystem';
 import Benefits from './components/Benefits';
-import Process from './components/Process';
+import Services from './components/Services';
 import FAQ from './components/FAQ';
 import CTA from './components/CTA';
 import Footer from './components/Footer';
@@ -54,10 +55,11 @@ const App: React.FC = () => {
         return (
           <>
             <Hero onNavigate={navigateTo} />
-            <Problems onNavigate={navigateTo} />
+            <Problems />
             <Features />
+            <ChaosToSystem />
             <Benefits onNavigate={navigateTo} />
-            <Process onNavigate={navigateTo} />
+            <Services />
             <FAQ />
             <CTA onNavigate={navigateTo} />
           </>

@@ -11,6 +11,22 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
+  const handleNavClick = (targetId: string) => {
+    // If we're on a different page, navigate home first
+    onNavigate('home');
+    
+    // Close mobile menu if open
+    if (isOpen) setIsOpen(false);
+
+    // Short timeout to ensure the home view components are mounted before scrolling
+    setTimeout(() => {
+      const element = document.getElementById(targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 50);
+  };
+
   const scrollToHero = () => {
     onNavigate('home');
     setTimeout(() => {
@@ -18,6 +34,13 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
     }, 100);
     if(isOpen) setIsOpen(false);
   }
+
+  const navLinks = [
+    { label: 'Benefits', id: 'features' },
+    { label: 'Impact', id: 'benefits' },
+    { label: 'Solutions', id: 'services' },
+    { label: 'FAQ', id: 'faq' },
+  ];
 
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-[1000] shadow-sm">
@@ -29,16 +52,23 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
           y<span className="text-[#0066cc]">Lamda</span>
         </div>
 
-        <ul className="hidden md:flex gap-8 items-center list-none">
-          <li><a href="#benefits" className="text-gray-600 hover:text-[#0066cc] transition-colors font-semibold text-sm">Benefits</a></li>
-          <li><a href="#process" className="text-gray-600 hover:text-[#0066cc] transition-colors font-semibold text-sm">Our Process</a></li>
-          <li><a href="#faq" className="text-gray-600 hover:text-[#0066cc] transition-colors font-semibold text-sm">FAQ</a></li>
+        <ul className="hidden md:flex gap-6 lg:gap-8 items-center list-none">
+          {navLinks.map((link) => (
+            <li key={link.label}>
+              <button 
+                onClick={() => handleNavClick(link.id)} 
+                className="text-gray-600 hover:text-[#0066cc] transition-colors font-semibold text-sm focus:outline-none"
+              >
+                {link.label}
+              </button>
+            </li>
+          ))}
           <li>
             <button 
               onClick={scrollToHero}
-              className="bg-[#0066cc] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all hover:bg-[#0052a3] active:scale-95"
+              className="bg-[#0066cc] text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-[0_4px_14px_0_rgba(0,102,204,0.39)] hover:shadow-[0_6px_20px_rgba(0,102,204,0.23)] hover:-translate-y-0.5 transition-all duration-300 active:scale-95"
             >
-              Get My Free Audit
+              Get Free Audit
             </button>
           </li>
         </ul>
@@ -48,13 +78,19 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
         </button>
 
         {isOpen && (
-          <div className="absolute top-full left-0 right-0 bg-white border-b border-gray-100 flex flex-col p-6 gap-4 z-[999] md:hidden shadow-xl">
-            <a href="#benefits" onClick={toggleMenu} className="text-gray-900 py-3 border-b border-gray-50 font-medium">Benefits</a>
-            <a href="#process" onClick={toggleMenu} className="text-gray-900 py-3 border-b border-gray-50 font-medium">Our Process</a>
-            <a href="#faq" onClick={toggleMenu} className="text-gray-900 py-3 border-b border-gray-50 font-medium">FAQ</a>
+          <div className="absolute top-full left-0 right-0 bg-white border-b border-gray-100 flex flex-col p-6 gap-2 z-[999] md:hidden shadow-xl">
+            {navLinks.map((link) => (
+              <button 
+                key={link.label} 
+                onClick={() => handleNavClick(link.id)} 
+                className="text-gray-900 py-3 border-b border-gray-50 font-medium text-left focus:outline-none"
+              >
+                {link.label}
+              </button>
+            ))}
             <button 
               onClick={scrollToHero}
-              className="bg-[#0066cc] text-white py-3 rounded-xl font-bold text-center shadow-lg active:scale-95"
+              className="bg-[#0066cc] text-white py-4 mt-4 rounded-xl font-bold text-center shadow-lg shadow-blue-100 active:scale-95"
             >
               Get Free Audit
             </button>
