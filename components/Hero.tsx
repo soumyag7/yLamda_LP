@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { LeadFormData } from '../types';
 import { ShieldCheck, Zap, Users, Loader2 } from 'lucide-react';
@@ -16,7 +17,7 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
     industry: ''
   });
 
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'error' | 'success'>('idle');
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
 
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
