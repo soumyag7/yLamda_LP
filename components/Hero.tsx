@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { LeadFormData } from '../types';
 import { ShieldCheck, Zap, Users, Loader2 } from 'lucide-react';
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxkkPcqGDbsk6tB_jbljWj4h25AC865zQXNgZ2LIWiEoqkz-wXe5K-wMtUn4sxns_T5JA/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
 
 interface HeroProps {
   onNavigate: (view: string) => void;
@@ -19,41 +19,30 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 
   const [status, setStatus] = useState<'idle' | 'submitting' | 'error'>('idle');
 
- const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setStatus('submitting');
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('submitting');
 
-  try {
-    // NEW: Send as FORM DATA instead of JSON (more reliable)
-    const formDataToSend = new FormData();
-    formDataToSend.append('name', formData.name);
-    formDataToSend.append('email', formData.email);
-    formDataToSend.append('phone', formData.phone);
-    formDataToSend.append('industry', formData.industry);
-    
-    console.log('Sending data:', {
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      industry: formData.industry
-    });
-
-    const response = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: formDataToSend  // Changed from JSON to FormData
-    });
-    
-    console.log('Form submitted successfully');
-    onNavigate('thank-you');
-    
-  } catch (error) {
-    console.error("Submission error:", error);
-    setStatus('error');
-    setTimeout(() => setStatus('idle'), 3000);
-  }
-};
-
+    try {
+      if (SCRIPT_URL.includes('YOUR_SCRIPT_ID')) {
+        await new Promise(resolve => setTimeout(resolve, 1200));
+        console.warn("Form submitted to placeholder. Redirecting to Thank You page for demo.");
+      } else {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+      }
+      
+      onNavigate('thank-you');
+    } catch (error) {
+      console.error("Submission error:", error);
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 3000);
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
